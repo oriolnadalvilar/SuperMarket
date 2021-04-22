@@ -1,0 +1,9 @@
+.alertdiv{
+    margin:auto;
+    text-align: center;
+    border: 2px outset red;
+    background-color:#AB3030;
+    text-align: center; 
+    width: 35%;
+    border-radius: 5px;
+    color: white }
