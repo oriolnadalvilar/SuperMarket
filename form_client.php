@@ -1,6 +1,8 @@
 <?php
 	require "header.php";
 ?>
+<head><link rel="stylesheet" type="text/css" href="./css/styles.css"></head>
+
 		<div class="container m-5 mx-auto text-white">
 			<form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?> method="post">
 				<div class="row">
@@ -63,7 +65,6 @@
 
 											echo "</table>";
 
-
 											} else {
 												echo "<p>No hay ningún/a usuario/a</p>";
 											}
@@ -97,6 +98,7 @@
 			if (!empty($_POST)) {
 				$username = $_POST["username"];
 				$pass = $_POST["pass"];
+				$rp_pass = $_POST["rp_pass"];
 				$nombre = $_POST["nombre"];
 				$apellidos = $_POST["apellidos"];
 				$nif = $_POST["nif"];
@@ -111,14 +113,26 @@
 				//echo $sql;
 
 				$result = $conn->query($sql);
+				$valid = false;
 
-				if ($result) {
-					echo '<script type="text/javascript">
-					           window.location = "entrar.php"
-					     </script>';
-				} 
-
+				if ($valid == false) {
+					$uppercase = preg_match('@[A-Z]@', $pass);
+					$lowercase = preg_match('@[a-z]@', $pass);
+					$number = preg_match('@[0-9]@', $pass);
+					if (strlen($username) < 6) { echo "<div class=\"alertdiv\">El nom d'usuari no és vàlid.</div>
+						"; }
+					elseif ($pass != $rp_pass) { echo "<div class=\"alertdiv\">Les contrasenyes no coincideixen.</div>"; }
+					elseif (!$uppercase || !$lowercase || !$number || !strlen($pass) > 8) {
+						echo "<div class=\"alertdiv\">La contrasenya no es prou segura. Ha de incloure minúscules, majúsucules, nombres i una llargada superior o igual a 8.</div>";
+					}
+					elseif (strlen($nif) != 9 || strpos( $nif , $uppercase , $offset == -9 )) { echo "<div class=\"alertdiv\">El NIF no es vàlid.</div>"; }
+					elseif (!preg_match("/^[a-z][_a-z0-9-]+(\.[_a-z0-9-]+)*@([a-z0-9-]{2,})+(\.[a-z0-9-]{2,})*$/", $mail)) {
+						echo "<div class=\"alertdiv\">El correu no és vàlid.</div>";
+					} else {$valid = true;}
+				}
 				
+
+				if ($valid == true) {echo '<script type="text/javascript">window.location = "entrar.php"</script>';} 
 
 			}
 			$conn->close();
