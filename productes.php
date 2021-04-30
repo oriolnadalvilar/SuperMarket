@@ -35,7 +35,7 @@
 									<td class="align-middle">'.$categoria.'</td>
 									<td class="align-middle">'.$preu.'</td>
 									<td class="align-middle">
-										<form class="form-inline" action="form_producte.php" method="post">
+										<form class="form-inline" action="productes.php" method="post">
 											<a href="form_producte.php?codi='.$codi.'" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
 											<div class="form-group">
 												<input type="hidden" name="codi" value="'.$codi.'" />
@@ -44,6 +44,7 @@
 										</form>
 									</td> 
 								</tr>';
+								
 								$row = $result->fetch_assoc();
 							}
 
@@ -53,6 +54,18 @@
 
 					}else {
 						echo "ERROR al seleccionar los datos";
+					}
+					$codi2 = "";
+					if ($_POST != NULL || $_POST != "" && isset($_POST)) {
+						include 'config.php';
+						$codi2 = $_POST["codi"];
+						$sql2 = "DELETE FROM productes WHERE codi = '$codi'";
+						$result2 = $conn->query($sql2);
+
+						if ($result2 == true) {
+							echo "<div class=\"alert alert-success\" role=\"alert\" >Aliment eliminat correctament.</div>";
+						}
+
 					}
 					$conn->close();
 					?>

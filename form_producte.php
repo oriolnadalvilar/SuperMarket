@@ -19,6 +19,7 @@
 							<?php if (isset($_POST) && $_POST!=null) { $nom = $_POST["nom"]; 
 								echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
 							} elseif (isset($_GET) && $_GET!=null) { 
+								include "config.php";
 								$codi = $_GET["codi"];
 								$sql = "SELECT * FROM productes WHERE codi = '$codi'";
 								$result = $conn->query($sql);
@@ -39,21 +40,23 @@
 							if($result) {
 								if ($result->num_rows > 0) {
 									$row = $result->fetch_assoc();
+									$catSelected = false;
 									while($row) {
 										$idCategoria = $row["id_categoria"];
 										$nom = $row["nom"];
-										
+									
 										if (isset($_POST) && $_POST!=null) {
 											echo "<option value=\"$idCategoria\" selected >$nom</option>";
-										} elseif (isset($_GET) && $_GET!=null) { 
+										} elseif (isset($_GET) && $_GET!=null && $catSelected == false) { 
 											$codi = $_GET["codi"];
-											$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+											$sql = "SELECT * FROM detall_productes WHERE codi = '$codi'";
 											$result2 = $conn->query($sql);
 											$row2 = $result2->fetch_assoc();
 											
-											$idCategoria = $row["categoria"];
-											$nom = $row["nom"]; 
-											echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
+											$idCategoria = $row2["id_categoria"];
+											$nom = $row2["nom_categoria"]; 
+											echo "<option value=\"$idCategoria\" selected>$nom</option>";
+											$catSelected = true;
 										} else {echo "<option value=\"$idCategoria\">$nom</option>";}
 										
 
@@ -76,11 +79,29 @@
 							<label for="preu">Preu:</label>
 							<?php if (isset($_POST) && $_POST!=null) { $preu = $_POST["preu"]; 
 								echo "<input type=\"number\" class=\"form-control\" name=\"preu\" id=\"preu\" value=\"$preu\" />";
+							} elseif (isset($_GET) && $_GET!=null) { 
+								include "config.php";
+								$codi = $_GET["codi"];
+								$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+								$result = $conn->query($sql);
+								$row = $result->fetch_assoc();
+
+								$preu = $row["preu"]; 
+								echo "<input type=\"number\" class=\"form-control\" name=\"preu\" id=\"preu\" value=\"$preu\" />";
 							} else {echo "<input type=\"number\" class=\"form-control\" name=\"preu\" id=\"preu\" />";} ?>
 						</div>
 						<div class="form-group">
 							<label for="stock">Unitats en stock:</label>
 							<?php if (isset($_POST) && $_POST!=null) { $stock = $_POST["stock"]; 
+								echo "<input type=\"number\" class=\"form-control\" name=\"stock\" id=\"stock\" value=\"$stock\" />";
+							} elseif (isset($_GET) && $_GET!=null) { 
+								include "config.php";
+								$codi = $_GET["codi"];
+								$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+								$result = $conn->query($sql);
+								$row = $result->fetch_assoc();
+
+								$stock = $row["unitats_stock"]; 
 								echo "<input type=\"number\" class=\"form-control\" name=\"stock\" id=\"stock\" value=\"$stock\" />";
 							} else {echo "<input type=\"number\" class=\"form-control\" name=\"stock\" id=\"stock\" />";} ?>
 						</div>
@@ -101,6 +122,15 @@
 								$ext = $ext = pathinfo($name, PATHINFO_EXTENSION);
 								$upFile = "images/productes/".$codi.".".$ext;
 								echo "<img src=\"$upFile\" class=\"img-thumbnail\" style=\"height: 250px;\" />";
+							} elseif (isset($_GET) && $_GET!=null) { 
+								include "config.php";
+								$codi = $_GET["codi"];
+								$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+								$result = $conn->query($sql);
+								$row = $result->fetch_assoc();
+
+								$imatge = $row["imatge"]; 
+								echo "<img src=\"$imatge\" class=\"img-thumbnail\" style=\"height: 250px;\" />";
 							} else {echo "<img src=\"images/productes/no-image.png\" class=\"img-thumbnail\" style=\"height: 250px;\" />";}
 							?>
 						</div>
