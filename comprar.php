@@ -54,23 +54,24 @@
 										$stock = $row["unitats_stock"];
 										$imatge = $row["imatge"];
 
-										echo "<tr> 
-										<td class=\"align-middle\">
-											<img src=\"$imatge\" class=\"img-thumbnail mr-2\" style=\"height: 50px;\" />
-											$nom
-										</td>
-										<td class=\"align-middle\">$idCategoria</td>
-										<td class=\"align-middle text-right\">$preu €</td>
-										<td class=\"align-middle\">
-											<form class=\"form-inline\" action=\"carrito.php\" method=\"post\">
-												<div class=\"form-group\">
-													<input type=\"hidden\" name=\"codi\" value=\"$codi\" />
-													<input type=\"number\" class=\"form-control form-control-sm mr-2\" name=\"quantitat\" min=\"1\" value=\"1\" style=\"width: 50px;\" />
-												</div>
-												<button type=\"submit\" class=\"btn btn-primary\"><i class=\"fas fa-cart-plus\"></i></button>
-											</form>
-										</td> 
-									</tr>";
+										echo "
+										<tr> 
+											<td class=\"align-middle\">
+												<img src=\"$imatge\" class=\"img-thumbnail mr-2\" style=\"height: 50px;\" />
+												$nom
+											</td>
+											<td class=\"align-middle\">$idCategoria</td>
+											<td class=\"align-middle text-right\">$preu €</td>
+											<td class=\"align-middle\">
+												<form class=\"form-inline\" action=\"carrito.php\" method=\"post\">
+													<div class=\"form-group\">
+														<input type=\"hidden\" name=\"codi\" value=\"$codi\" />
+														<input type=\"number\" class=\"form-control form-control-sm mr-2\" name=\"quantitat\" min=\"1\" value=\"1\" style=\"width: 50px;\" />
+													</div>
+													<button type=\"submit\" class=\"btn btn-primary\"><i class=\"fas fa-cart-plus\"></i></button>
+												</form>
+											</td> 
+										</tr>";
 
 										$row = $result->fetch_assoc();
 									}

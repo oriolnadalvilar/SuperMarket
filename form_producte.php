@@ -9,11 +9,22 @@
 							<label for="codi">Codi:</label>
 							<?php if (isset($_POST) && $_POST!=null) { $codi = $_POST["codi"]; 
 								echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" value=\"$codi\" />";
-							} else {echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" />";} ?>
+							} elseif (isset($_GET) && $_GET!=null) { $codi = $_GET["codi"]; 
+								echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" value=\"$codi\" />";
+							}else {echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" />";} ?>
+							 
 						</div>
 						<div class="form-group">
 							<label for="nom">Nom:</label>
 							<?php if (isset($_POST) && $_POST!=null) { $nom = $_POST["nom"]; 
+								echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
+							} elseif (isset($_GET) && $_GET!=null) { 
+								$codi = $_GET["codi"];
+								$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+								$result = $conn->query($sql);
+								$row = $result->fetch_assoc();
+
+								$nom = $row["nom"]; 
 								echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
 							} else {echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" />";} ?>
 						</div>
@@ -34,6 +45,15 @@
 										
 										if (isset($_POST) && $_POST!=null) {
 											echo "<option value=\"$idCategoria\" selected >$nom</option>";
+										} elseif (isset($_GET) && $_GET!=null) { 
+											$codi = $_GET["codi"];
+											$sql = "SELECT * FROM productes WHERE codi = '$codi'";
+											$result = $conn->query($sql);
+											$row = $result->fetch_assoc();
+											
+											$idCategoria = $row["categoria"];
+											$nom = $row["nom"]; 
+											echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
 										} else {echo "<option value=\"$idCategoria\">$nom</option>";}
 										
 
