@@ -17,15 +17,12 @@
 				</div>
 			</form>
 			<?php 
-				session_start();
-
 				$incioSesion = false;
 				$error = false;
 			
 				if (!empty($_POST)) {
 			
 					include 'config.php';
-					$conn = new mysqli($servername, $username, $password, $dbname);
 					
 					if ($conn->connect_error) {
 						die("ERROR al conectar con la BBDD");
@@ -39,11 +36,10 @@
 					
 					$result = $conn->query($sql);
 					$row = $result->fetch_assoc();
-
 					if ($row) {	
 						
 						$_SESSION["user"] = $row["id_usuari"];
-			
+						echo $_SESSION["user"];
 						$incioSesion = true;
 			
 					} else {$error = true;}
@@ -51,7 +47,7 @@
 					$conn->close();
 				}
 			
-				if ($incioSesion) {
+				if ($incioSesion == true) {
 					header("Location: comprar.php");
 				} elseif ($error == true) {
 					echo "<div class=\"alertdiv\">Les dades no són vàlides.</div>";

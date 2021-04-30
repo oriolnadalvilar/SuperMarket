@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php 
+	session_start();
+?>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -55,7 +58,18 @@
 						</div>
 					</li>
 				</ul>
-				<a href="entrar.php" class="btn btn-primary my-0 mx-2">Entrar</a>
-				<a href="form_client.php" class="btn btn-outline-primary my-0">Nou client</a>
+				<?php 
+
+					if (!isset($_SESSION["user"])) {
+						echo "<a href=\"entrar.php\" class=\"btn btn-primary my-0 mx-2\">Entrar</a>
+						<a href=\"form_client.php\" class=\"btn btn-outline-primary my-0\">Nou client</a>";
+
+					} else {
+						echo "<a href=\"tancar.php\" class=\"btn btn-primary my-0 mx-2\">Sortir</a>";
+					}
+					
+					
+				?>
+				
 			</div>
 		</nav>

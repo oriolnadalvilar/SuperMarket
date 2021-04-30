@@ -48,7 +48,6 @@
 								<?php
 									include 'config.php';
 									$sql = "SELECT id_poblacio, nom FROM poblacions ORDER BY nom";
-									$conn = new mysqli($servername, $username, $password, $dbname);
 									$result = $conn->query($sql);
 
 									if ($result) {
