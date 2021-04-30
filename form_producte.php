@@ -16,8 +16,32 @@
 						<div class="form-group">
 							<label for="categoria">Categoria:</label>
 							<select class="form-control" name="categoria" id="categoria">
-								<option value="">Selecciona una opció</option>
-								<option value="1">Arròs</option>
+							<option value="">Selecciona una opció</option>
+							<?php
+							include "config.php";
+							$sql = "SELECT id_categoria, nom FROM categories ORDER BY nom";
+							$result = $conn->query($sql);
+							if($result) {
+								if ($result->num_rows > 0) {
+									$row = $result->fetch_assoc();
+									while($row) {
+										$idCategoria = $row["id_categoria"];
+										$nom = $row["nom"];
+
+										echo "<option value=\"$idCategoria\">$nom</option>";
+
+										$row = $result->fetch_assoc();
+									}
+
+								} else {
+									echo "<p>No hay ningún/a usuario/a</p>";
+								}
+
+							}else {
+								echo "ERROR al seleccionar los datos";
+							}
+							$conn->close();
+							?>	
 							</select>
 						</div>
 						<div class="form-group">
