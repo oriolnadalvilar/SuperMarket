@@ -7,11 +7,15 @@
 					<div class="col-4 offset-2">
 						<div class="form-group">
 							<label for="codi">Codi:</label>
-							<input type="text" class="form-control" name="codi" id="codi" />
+							<?php if (isset($_POST) && $_POST!=null) { $codi = $_POST["codi"]; 
+								echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" value=\"$codi\" />";
+							} else {echo "<input type=\"text\" class=\"form-control\" name=\"codi\" id=\"codi\" />";} ?>
 						</div>
 						<div class="form-group">
 							<label for="nom">Nom:</label>
-							<input type="text" class="form-control" name="nom" id="nom" />
+							<?php if (isset($_POST) && $_POST!=null) { $nom = $_POST["nom"]; 
+								echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" value=\"$nom\" />";
+							} else {echo "<input type=\"text\" class=\"form-control\" name=\"nom\" id=\"nom\" />";} ?>
 						</div>
 						<div class="form-group">
 							<label for="categoria">Categoria:</label>
@@ -27,8 +31,11 @@
 									while($row) {
 										$idCategoria = $row["id_categoria"];
 										$nom = $row["nom"];
-
-										echo "<option value=\"$idCategoria\">$nom</option>";
+										
+										if (isset($_POST) && $_POST!=null) {
+											echo "<option value=\"$idCategoria\" selected >$nom</option>";
+										} else {echo "<option value=\"$idCategoria\">$nom</option>";}
+										
 
 										$row = $result->fetch_assoc();
 									}
@@ -40,17 +47,22 @@
 							}else {
 								echo "ERROR al seleccionar los datos";
 							}
+							
 							$conn->close();
 							?>	
 							</select>
 						</div>
 						<div class="form-group">
 							<label for="preu">Preu:</label>
-							<input type="number" class="form-control" name="preu" id="preu" />
+							<?php if (isset($_POST) && $_POST!=null) { $preu = $_POST["preu"]; 
+								echo "<input type=\"number\" class=\"form-control\" name=\"preu\" id=\"preu\" value=\"$preu\" />";
+							} else {echo "<input type=\"number\" class=\"form-control\" name=\"preu\" id=\"preu\" />";} ?>
 						</div>
 						<div class="form-group">
 							<label for="stock">Unitats en stock:</label>
-							<input type="number" class="form-control" name="stock" id="stock" />
+							<?php if (isset($_POST) && $_POST!=null) { $stock = $_POST["stock"]; 
+								echo "<input type=\"number\" class=\"form-control\" name=\"stock\" id=\"stock\" value=\"$stock\" />";
+							} else {echo "<input type=\"number\" class=\"form-control\" name=\"stock\" id=\"stock\" />";} ?>
 						</div>
 						<div class="form-group text-right">
 							<a href="productes.php" class="btn btn-outline-secondary mx-2">Tornar</a>
@@ -63,11 +75,48 @@
 							<input type="file" class="form-control" name="imatge" id="imatge" />
 						</div>
 						<div class="text-center">
-							<img src="images/productes/no-image.png" class="img-thumbnail" style="height: 250px;" />
+							<?php if (isset($_POST) && $_POST!=null) { 
+								$codi = $_POST["codi"];
+								$name = $_FILES["imatge"]["name"];
+								$ext = $ext = pathinfo($name, PATHINFO_EXTENSION);
+								$upFile = "images/productes/".$codi.".".$ext;
+								echo "<img src=\"$upFile\" class=\"img-thumbnail\" style=\"height: 250px;\" />";
+							} else {echo "<img src=\"images/productes/no-image.png\" class=\"img-thumbnail\" style=\"height: 250px;\" />";}
+							?>
 						</div>
 					</div>
 				</div>
 			</form>
+			<?php 
+			if (isset($_POST) && $_POST!=null) {
+				include "config.php";
+				$codi = $_POST["codi"];
+				$nom = $_POST["nom"];
+				$categoria = $_POST["categoria"];
+				$preu = $_POST["preu"];
+				$stock = $_POST["stock"];
+				$name = $_FILES["imatge"]["name"];
+				$ext = $ext = pathinfo($name, PATHINFO_EXTENSION);
+
+
+				$upFile = "images/productes/".$codi.".".$ext;
+
+				if(is_uploaded_file($_FILES["imatge"]["tmp_name"])) {
+					if(move_uploaded_file($_FILES["imatge"]["tmp_name"], $upFile)) {
+						$sql = "INSERT INTO productes (codi, categoria, nom, preu, unitats_stock, imatge) 
+						VALUES ('$codi',$categoria , '$nom', $preu, $stock, '$upFile')";
+						$result = $conn->query($sql);
+
+						echo "<div class=\"alert alert-success\" role=\"alert\" >Aliment afegit correctament.</div>";
+					}
+				} else {
+					echo "<div class=\"alert alert-danger\" role=\"alert\" >No ha sigut possible pujar l'arxiu.</div>";
+				}
+
+				
+
+			}				
+			?>
 		</div>
 	</body>
 </html>
