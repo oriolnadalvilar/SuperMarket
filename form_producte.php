@@ -48,8 +48,8 @@
 										} elseif (isset($_GET) && $_GET!=null) { 
 											$codi = $_GET["codi"];
 											$sql = "SELECT * FROM productes WHERE codi = '$codi'";
-											$result = $conn->query($sql);
-											$row = $result->fetch_assoc();
+											$result2 = $conn->query($sql);
+											$row2 = $result2->fetch_assoc();
 											
 											$idCategoria = $row["categoria"];
 											$nom = $row["nom"]; 
