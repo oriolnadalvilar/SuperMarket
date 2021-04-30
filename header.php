@@ -1,44 +1,6 @@
 <!DOCTYPE html>
 <?php 
 	session_start();
-
-	$incioSesion = false;
-	$error = false;
-
-	if (!empty($_POST)) {
-
-		include 'config.php';
-		
-		if ($conn->connect_error) {
-			die("ERROR al conectar con la BBDD");
-		}
-
-		$usuario = $_POST["username"];
-		$contrasenya = $_POST["pass"];
-
-		$sql = "SELECT * FROM clients
-				WHERE nom_usuari = '$usuario' AND contrasenya = '$contrasenya'";
-		
-		$result = $conn->query($sql);
-		$row = $result->fetch_assoc();
-		echo $row["id_usuari"];
-
-		if ($row) {	
-			
-			$_SESSION["user"] = $row["id_usuari"];
-			$incioSesion = true;
-
-		} else {$error = true;}
-
-		$conn->close();
-	}
-
-	if ($incioSesion == true) {
-		header("Location: comprar.php");
-	} elseif ($error == true) {
-		echo "<div class=\"alertdiv\">Les dades no són vàlides.</div>";
-	}
-
 ?>
 <html>
 	<head>
@@ -97,13 +59,17 @@
 					</li>
 				</ul>
 				<?php 
-					include 'config.php';
-					$user_id = $_SESSION["user"];
+
+					if (!isset($_SESSION["user"])) {
+						echo "<a href=\"entrar.php\" class=\"btn btn-primary my-0 mx-2\">Entrar</a>
+						<a href=\"form_client.php\" class=\"btn btn-outline-primary my-0\">Nou client</a>";
+
+					} else {
+						echo "<a href=\"tancar.php\" class=\"btn btn-primary my-0 mx-2\">Sortir</a>";
+					}
 					
-					var_dump($user_id);
-					$sql = "SELECT nom, cognoms FROM clients WHERE id_client = $user_id";
+					
 				?>
-				<a href="entrar.php" class="btn btn-primary my-0 mx-2">Entrar</a>
-				<a href="form_client.php" class="btn btn-outline-primary my-0">Nou client</a>
+				
 			</div>
 		</nav>

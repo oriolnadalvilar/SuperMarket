@@ -16,7 +16,43 @@
 					<button type="submit" class="btn btn-default">Entrar</button>
 				</div>
 			</form>
+			<?php 
+				$incioSesion = false;
+				$error = false;
 			
+				if (!empty($_POST)) {
+			
+					include 'config.php';
+					
+					if ($conn->connect_error) {
+						die("ERROR al conectar con la BBDD");
+					}
+			
+					$usuario = $_POST["username"];
+					$contrasenya = $_POST["pass"];
+			
+					$sql = "SELECT * FROM clients
+							WHERE nom_usuari = '$usuario' AND contrasenya = '$contrasenya'";
+					
+					$result = $conn->query($sql);
+					$row = $result->fetch_assoc();
+					if ($row) {	
+						
+						$_SESSION["user"] = $row["id_usuari"];
+						echo $_SESSION["user"];
+						$incioSesion = true;
+			
+					} else {$error = true;}
+			
+					$conn->close();
+				}
+			
+				if ($incioSesion == true) {
+					header("Location: comprar.php");
+				} elseif ($error == true) {
+					echo "<div class=\"alertdiv\">Les dades no són vàlides.</div>";
+				}
+			?>
 		</div>
 	</body>
 </html>
