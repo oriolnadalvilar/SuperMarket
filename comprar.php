@@ -41,7 +41,6 @@
 							} else {
 								$sql = "SELECT * FROM detall_productes";
 							}
-							$conn = new mysqli($servername, $username, $password, $dbname);
 							$result = $conn->query($sql);
 							
 							if($result) {
