@@ -63,7 +63,7 @@
 						$result2 = $conn->query($sql2);
 
 						if ($result2 == true) {
-							echo "<div class=\"alert alert-success\" role=\"alert\" >Aliment eliminat correctament.</div>";
+							echo "<div class=\"alert alert-success\" role=\"alert\" >Aliment eliminat correctament</div>";
 						}
 
 					}
