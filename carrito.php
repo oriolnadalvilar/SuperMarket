@@ -1,5 +1,21 @@
 <?php
 	require "header.php";
+	include "common/carrito.php";
+	if (!empty($_POST)) {
+		$codi_producte = $_POST["codi"];
+		$quantitat = $_POST["quantitat"];
+
+		include "config.php";
+		$sql = "SELECT nom,preu FROM productes WHERE codi = '$codi_producte'";
+		$result = $conn->query($sql);
+		$row = $result->fetch_assoc();
+
+		$nom = $row["nom"];
+		$preu = $row["preu"];
+
+		$afegit = afegirProducte($codi_producte, $nom, $preu, $quantitat);
+	}
+	
 ?>
 		<div class="container m-5 mx-auto">
 			<div class="col-8 offset-2">
@@ -11,52 +27,35 @@
 						<th class="text-right">Unitats</th>
 						<th class="text-right">Import</th>
 					</tr>
-					<tr> 
-						<td class="align-middle">
-							Arroz Golden Sun 1 kg
-						</td>
-						<td class="align-middle text-right">0.75 €</td>
-						<td class="align-middle text-right">2 u.</td>
-						<td class="align-middle text-right">1.50 €</td>
-					</tr>
-					<tr> 
-						<td class="align-middle">
-							Arroz Golden Sun 1 kg
-						</td>
-						<td class="align-middle text-right">0.75 €</td>
-						<td class="align-middle text-right">2 u.</td>
-						<td class="align-middle text-right">1.50 €</td>
-					</tr>
-					<tr> 
-						<td class="align-middle">
-							Arroz Golden Sun 1 kg
-						</td>
-						<td class="align-middle text-right">0.75 €</td>
-						<td class="align-middle text-right">2 u.</td>
-						<td class="align-middle text-right">1.50 €</td>
-					</tr>
-					<tr> 
-						<td class="align-middle">
-							Arroz Golden Sun 1 kg
-						</td>
-						<td class="align-middle text-right">0.75 €</td>
-						<td class="align-middle text-right">2 u.</td>
-						<td class="align-middle text-right">1.50 €</td>
-					</tr>
-					<tr> 
-						<td class="align-middle">
-							Arroz Golden Sun 1 kg
-						</td>
-						<td class="align-middle text-right">0.75 €</td>
-						<td class="align-middle text-right">2 u.</td>
-						<td class="align-middle text-right">1.50 €</td>
-					</tr>
-					<tr class="bg-info"> 
-						<th colspan="3" scope="row" class="text-right">							
-							Import total
-						</td>
-						<td class="align-middle text-right">7.50 €</td>
-					</tr>
+					<?php 
+						if (!empty($_SESSION["carrito"])) {
+							foreach ($_SESSION["carrito"] as $key) {
+								$codi = $key["codi"];
+								$nom = $key["nom"];
+								$preu = $key["preu"];
+								$quantitat = $key["quantitat"]; 
+								$import_producte = importProducte($codi); 
+								echo "
+								<tr> 
+									<td class=\"align-middle\">
+										$nom
+									</td>
+									<td class=\"align-middle text-right\">$preu €</td>
+									<td class=\"align-middle text-right\">$quantitat u.</td>
+									<td class=\"align-middle text-right\">$import_producte €</td>
+								</tr>";	
+							}
+							$import_total = importTotal();
+							echo "
+							<tr class=\"bg-info\"> 
+								<th colspan=\"3\" scope=\"row\" class=\"text-right\">							
+									Import total
+								</td>
+								<td class=\"align-middle text-right\">$import_total €</td>
+							</tr>";
+							
+						}
+					?>
 				</table>
 				<div class="text-right">
 					<a href="comprar.php" class="btn btn-outline-secondary mx-2">Afegir més productes</a>
