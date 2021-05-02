@@ -26,6 +26,7 @@
 						<th class="text-right">Preu</th>
 						<th class="text-right">Unitats</th>
 						<th class="text-right">Import</th>
+						<th class="text-right">Borrar</th>
 					</tr>
 					<?php 
 						if (!empty($_SESSION["carrito"])) {
@@ -43,7 +44,17 @@
 									<td class=\"align-middle text-right\">$preu €</td>
 									<td class=\"align-middle text-right\">$quantitat u.</td>
 									<td class=\"align-middle text-right\">$import_producte €</td>
+									<td class=\"align-middle text-right\"><form class=\"form-inline\" action=\"carrito.php\" method=\"get\">
+									<input type=\"hidden\" name=\"codi\" value=\"$codi\" />
+									<button type=\"submit\" class=\"btn btn-primary\"><i class=\"fas fa-trash-alt\"></i></button>
+								</form></td>
 								</tr>";	
+								
+							}
+							if (isset($_GET) && $_GET != null) {
+									$codi = $_GET["codi"];
+									$eliminat = eliminarProducte($codi);
+									echo '<script type="text/javascript">window.location = "carrito.php"</script>';
 							}
 							$import_total = importTotal();
 							echo "
