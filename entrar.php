@@ -31,15 +31,14 @@
 					$usuario = $_POST["username"];
 					$contrasenya = $_POST["pass"];
 			
-					$sql = "SELECT * FROM clients
+					$sql = "SELECT id_client FROM clients
 							WHERE nom_usuari = '$usuario' AND contrasenya = '$contrasenya'";
 					
 					$result = $conn->query($sql);
 					$row = $result->fetch_assoc();
 					if ($row) {	
-						
-						$_SESSION["user"] = $row["id_usuari"];
-						echo $_SESSION["user"];
+						session_start();
+						$_SESSION["user"] = $row["id_client"];
 						$incioSesion = true;
 			
 					} else {$error = true;}
