@@ -55,13 +55,12 @@
 					}else {
 						echo "ERROR al seleccionar los datos";
 					}
-					$codi2 = "";
 					if (($_POST != NULL || $_POST != "") && isset($_POST)) {
 						include 'config.php';
+
 						$codi2 = $_POST["codi"];
 						$sql2 = "DELETE FROM productes WHERE codi = '$codi2'";
 						$result2 = $conn->query($sql2);
-						$row = $result->fetch_assoc();
 						
 						
 
