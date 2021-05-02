@@ -1,5 +1,21 @@
 <?php
 	require "header.php";
+	include "common/carrito.php";
+	if (!empty($_POST)) {
+		$codi_producte = $_POST["codi"];
+		$quantitat = $_POST["quantitat"];
+
+		include "config.php";
+		$sql = "SELECT nom,preu FROM productes WHERE codi = '$codi_producte'";
+		$result = $conn->query($sql);
+		$row = $result->fetch_assoc();
+
+		$nom = $row["nom"];
+		$preu = $row["preu"];
+
+		$afegit = afegirProducte($codi_producte, $nom, $preu, $quantitat);
+	}
+	
 ?>
 		<div class="container m-5 mx-auto">
 			<div class="col-8 offset-2">
@@ -11,6 +27,11 @@
 						<th class="text-right">Unitats</th>
 						<th class="text-right">Import</th>
 					</tr>
+					<?php 
+						if (!empty($_SESSION["carrito"])) {
+							
+						}
+					?>
 					<tr> 
 						<td class="align-middle">
 							Arroz Golden Sun 1 kg
