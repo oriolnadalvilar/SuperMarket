@@ -55,7 +55,7 @@
 					}else {
 						echo "ERROR al seleccionar los datos";
 					}
-					if (($_POST != NULL || $_POST != "") && isset($_POST)) {
+					if (($_POST != NULL || $_POST != "") && $_POST) {
 						include 'config.php';
 
 						$codi2 = $_POST["codi"];
